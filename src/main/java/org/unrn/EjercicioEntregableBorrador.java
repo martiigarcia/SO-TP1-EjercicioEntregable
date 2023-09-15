@@ -31,7 +31,6 @@ public class EjercicioEntregableBorrador {
             System.err.println("Señal recibida. Terminando...");
             retorno = 1;
             terminar = true;   //terminar hilo actual y todos los otros hilos
-//            System.exit(1);//terminar el programa con una señal de 1 por haber detenido el programa
         }));
 
 //El separador, le será indicado por parámetro -s.Si este parámetro no se le indica, el valor por defecto es el caracter tabulador.
@@ -44,7 +43,7 @@ public class EjercicioEntregableBorrador {
 //La variable HOSTNAME debe ser pasada con el valor “prueba”.
         Map<String, String> entorno = new HashMap<>(System.getenv());
         entorno.put("HOSTNAME", "prueba");
-//        System.out.println(entorno);
+
 
 //Debe leer una lista de comandos por la entrada estandar (Un comando por linea).
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
@@ -62,7 +61,8 @@ public class EjercicioEntregableBorrador {
 
 //Debe ejecutar cada uno de los comandos, en un hilo independiente.
 //Cada hilo debe imprimir por la salida standar el comando y el valor de retorno, en formato “comando”separador “retorno”.
-                    Thread thread = new Thread(new CommandExecutor(linea, separador, entorno));//creo un hilo
+                    //aca se hace un replaceAll para que si se lee un archivo con comandos se elimine el separador y se ejecute correctamente el comando
+                    Thread thread = new Thread(new CommandExecutor(linea.replaceAll(separador, ""), separador, entorno));//creo un hilo
                     threads.add(thread);//agrego el hilo al arreglo de hilos
                     thread.start(); //start al hilo que cree
                 }
@@ -104,9 +104,8 @@ public class EjercicioEntregableBorrador {
         @Override
         public void run() {
             try {
-                String comandoCompleto = String.join(" ", comando.split(separador));
 //                ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", comando); //ejecutar un comando en Windows (si es que no funciona bash -c comando)
-                ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", comandoCompleto); //ejecutar un comando en Linux
+                ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", comando); //ejecutar un comando en Linux
                 processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
                 processBuilder.environment().putAll(entorno);
                 Process proceso = processBuilder.start();

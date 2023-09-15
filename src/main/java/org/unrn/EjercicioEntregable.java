@@ -43,7 +43,7 @@ public class EjercicioEntregable {
                     terminar = true;
                 } else {
                     cantidad++;
-                    Thread thread = new Thread(new CommandExecutor(linea, separador, entorno));
+                    Thread thread = new Thread(new CommandExecutor(linea.replaceAll(separador, ""), separador, entorno));
                     threads.add(thread);
                     thread.start();
                 }
@@ -82,8 +82,7 @@ public class EjercicioEntregable {
         @Override
         public void run() {
             try {
-                String comandoCompleto = String.join(" ", comando.split(separador));
-                ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", comandoCompleto);
+                ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", comando);
 //                processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
                 processBuilder.environment().putAll(entorno);
                 Process proceso = processBuilder.start();
