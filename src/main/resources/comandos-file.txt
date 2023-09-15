@@ -1,0 +1,3 @@
+echo "Soy un comando"
+echo "Estoy probando como funciono en Linux"
+echo "Esta es la forma en que funciono"
