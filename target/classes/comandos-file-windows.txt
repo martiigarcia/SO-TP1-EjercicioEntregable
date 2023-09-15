@@ -1,3 +1,0 @@
-echo "Hola Mundo!"
-echo "Prueba de comandos en Windows"
-echo "Soy un archivo y estoy probando como funciono"
